@@ -1,0 +1,15 @@
+.navbar {
+  padding: 8px 40px 0 40px;
+  .logo-wrapper {
+    width: 163px;
+    height: 43px;
+    margin-right: 4rem;
+    display: inline-block;
+
+    img {
+      height: 100%;
+      object-fit: contain;
+      max-height: fit-content;
+    }
+  }
+}

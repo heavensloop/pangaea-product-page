@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import './index.scss';
-import './fonts/Karla-Italic-VariableFont_wght.ttf';
-import './fonts/Karla-VariableFont_wght.ttf';
-import './fonts/Montserrat-Regular.ttf';
+import 'index.scss';
+import App from 'App';
+import reportWebVitals from 'reportWebVitals';
+import 'fonts/Karla-Italic-VariableFont_wght.ttf';
+import 'fonts/Karla-VariableFont_wght.ttf';
+import 'fonts/Montserrat-Regular.ttf';
 
 ReactDOM.render(
   <React.StrictMode>
