@@ -18,3 +18,10 @@
     url("./fonts/Montserrat-Regular.ttf") format("truetype");
   font-weight: bold;
 }
+
+@font-face {
+  font-family: "FF Bau";
+  src: local("FF Bau"),
+    url("./fonts/FFBauRegular.woff2") format('woff2');
+  font-weight: bold;
+}
