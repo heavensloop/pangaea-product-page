@@ -17,8 +17,10 @@ const ProductItem = ({
   return (
     <div className="product-item">
       <a href={productDetailsUrl}>
-        <img src={imageUrl} alt="Keratin" className="product-image" />
-        <h1 className="description">{label}</h1>
+        <div className="product-info">
+          <img src={imageUrl} alt="Keratin" className="product-image" />
+          <h1 className="description">{label}</h1>
+        </div>
       </a>
       <p className="price">{price}</p>
       <button
@@ -39,6 +41,6 @@ ProductItem.propTypes = {
   onChoose: PropTypes.func.isRequired,
   imageUrl: PropTypes.string.isRequired,
   productDetailsUrl: PropTypes.string.isRequired,
-}
+};
 
 export default ProductItem;

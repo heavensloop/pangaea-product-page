@@ -1,5 +1,9 @@
 .product-item {
+  padding: 3rem 2rem;
   font-family: 'FF Bau';
+  .product-info {
+    min-height: 200px;
+  }
   a {
     color: #000000;
     font-size:16px;
