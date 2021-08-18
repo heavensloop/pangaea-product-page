@@ -6,6 +6,7 @@ const ProductItem = ({
   id,
   label,
   price,
+  currency,
   onChoose,
   imageUrl,
   productDetailsUrl,
@@ -23,7 +24,10 @@ const ProductItem = ({
           <h1 className="description">{label}</h1>
         </div>
       </Link>
-      <p className="price">{price}</p>
+      <p className="price">
+        <span>{currency}</span>
+        <span>{price}</span>
+      </p>
       <button
         type="button"
         className="button add-to-cart"
@@ -39,6 +43,7 @@ ProductItem.propTypes = {
   id: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
+  currency: PropTypes.string.isRequired,
   onChoose: PropTypes.func.isRequired,
   imageUrl: PropTypes.string.isRequired,
   productDetailsUrl: PropTypes.string.isRequired,

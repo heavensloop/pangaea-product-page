@@ -44,7 +44,7 @@ const TopNav = () => (
           Account
         </Link>
         <Link to="/" className="navbar-item">
-          <ShoppingCartIcon itemCount={0} />
+          <ShoppingCartIcon />
         </Link>
         <div className="navbar-item">
           <LanguageChooser defaultValue="en" />
