@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './product-item.scss';
 
 const ProductItem = ({
@@ -16,12 +17,12 @@ const ProductItem = ({
 
   return (
     <div className="product-item">
-      <a href={productDetailsUrl}>
+      <Link to={productDetailsUrl}>
         <div className="product-info">
           <img src={imageUrl} alt="Keratin" className="product-image" />
           <h1 className="description">{label}</h1>
         </div>
-      </a>
+      </Link>
       <p className="price">{price}</p>
       <button
         type="button"

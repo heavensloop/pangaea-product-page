@@ -3,13 +3,19 @@ import FormDropdown from 'components/FormDropdown';
 import ProductItem from 'components/ProductItem';
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
+import { useHistory, useLocation } from 'react-router-dom';
 import { GQL_PRODUCTS } from 'graphql/queries';
 import './products.scss';
 import categories from './categories';
 
+function useUrlQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const Products = () => {
-  const selectedValue =
-    window.location.search?.replace('?category=', '') || categories[0].value;
+  const history = useHistory();
+  const query = useUrlQuery();
+  const selectedValue = query.get('category') || categories[0].value;
   const selectedCategory = categories.find(
     ({ value }) => value === selectedValue
   );
@@ -18,7 +24,7 @@ const Products = () => {
 
   const setProductCategory = (productCategory) => {
     setDefaultValue(productCategory);
-    window.location = `/?category=${productCategory}`;
+    history.push(`/?category=${productCategory}`);
   };
 
   const showCartMenu = (id) => {

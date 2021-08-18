@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import LanguageChooser from 'components/LanguageChooser';
 import ShoppingCartIcon from 'components/ShoppingCartIcon';
 import Logo from 'logo.png';
@@ -6,11 +7,11 @@ import './top-nav.scss';
 const TopNav = () => (
   <nav className="navbar" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
-      <a className="navbar-item" href="https://bulma.io">
+      <Link to="/" className="navbar-item">
         <div className="logo-wrapper">
           <img src={Logo} alt="App Logo" />
         </div>
-      </a>
+      </Link>
       <button
         type="button"
         className="navbar-burger"
@@ -25,26 +26,26 @@ const TopNav = () => (
     </div>
     <div id="app-nav" className="navbar-menu">
       <div className="navbar-start">
-        <a href="/" className="navbar-item">
+        <Link to="/" className="navbar-item">
           Shop
-        </a>
-        <a href="/" className="navbar-item">
+        </Link>
+        <Link to="/" className="navbar-item">
           About
-        </a>
-        <a href="/" className="navbar-item">
+        </Link>
+        <Link to="/" className="navbar-item">
           Support
-        </a>
-        <a href="/" className="navbar-item">
+        </Link>
+        <Link to="/" className="navbar-item">
           Blog
-        </a>
+        </Link>
       </div>
       <div className="navbar-end">
-        <a href="/" className="navbar-item">
+        <Link to="/" className="navbar-item">
           Account
-        </a>
-        <a href="/" className="navbar-item">
+        </Link>
+        <Link to="/" className="navbar-item">
           <ShoppingCartIcon itemCount={0} />
-        </a>
+        </Link>
         <div className="navbar-item">
           <LanguageChooser defaultValue="en" />
         </div>
