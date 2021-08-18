@@ -1,15 +1,48 @@
 .navbar {
-  padding: 8px 40px 0 40px;
+  font-family: 'FF Bau';
+  padding-right: 1.8rem;
+  padding-left: 1.8rem;
+  padding-top: 2px;
+
   .logo-wrapper {
     width: 163px;
     height: 43px;
-    margin-right: 4rem;
+    margin-right: 3.4rem;
     display: inline-block;
 
     img {
       height: 100%;
       object-fit: contain;
       max-height: fit-content;
+      vertical-align: middle;
+      margin: 0;
     }
+  }
+
+  box-shadow: 0 2px 3px -3px grey;
+
+  .navbar-start {
+    .navbar-item {
+      margin-right: 1.55rem;
+    }
+  }
+
+  .navbar-start, .navbar-end {
+    margin-top: 10px;
+  }
+
+  .navbar-item {
+    color: rgb(0, 0, 0);
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  // a.navbar-item:focus,
+  a.navbar-item:focus-within,
+  a.navbar-item:hover {
+    background-color: transparent;
+    opacity: 80%;
+    -webkit-transition: color 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out;
   }
 }
