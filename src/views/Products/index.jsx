@@ -1,12 +1,13 @@
-/* eslint-disable camelcase */
-import FormDropdown from 'components/FormDropdown';
-import ProductItem from 'components/ProductItem';
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import ProductList from 'components/ProductList';
+import ProductListHeader from 'components/ProductListHeader';
+import { addToCart } from 'store/actions/cart';
 import { GQL_PRODUCTS } from 'graphql/queries';
-import './products.scss';
 import categories from './categories';
+import './products.scss';
 
 function useUrlQuery() {
   return new URLSearchParams(useLocation().search);
@@ -14,24 +15,29 @@ function useUrlQuery() {
 
 const Products = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const shoppingCart = useSelector(({ cart }) => cart);
   const query = useUrlQuery();
-  const selectedValue = query.get('category') || categories[0].value;
+  const [selectedCurrency, setSelectedCurrency] = useState('USD');
+  const selectedCategoryValue = query.get('category') || categories[0].value;
   const selectedCategory = categories.find(
-    ({ value }) => value === selectedValue
+    ({ value }) => value === selectedCategoryValue
   );
-  const [defaultValue, setDefaultValue] = useState(selectedValue);
-  const { loading, error, data } = useQuery(GQL_PRODUCTS);
+  const [defaultCategory, setDefaultCategory] = useState(selectedCategoryValue);
+  const { isLoading, error, data } = useQuery(GQL_PRODUCTS);
 
   const setProductCategory = (productCategory) => {
-    setDefaultValue(productCategory);
+    setDefaultCategory(productCategory);
     history.push(`/?category=${productCategory}`);
   };
 
-  const showCartMenu = (id) => {
-    alert(`Showing Cart Menu for product - ${id}`);
+  const addProductToCart = (product) => dispatch(addToCart(product));
+  const showCartMenu = (productId) => {
+    const selectedProduct = data?.products.find(({ id }) => id === productId);
+    addProductToCart(selectedProduct);
   };
 
-  if (loading) {
+  if (isLoading) {
     return <h1>Loading...</h1>;
   }
 
@@ -40,54 +46,26 @@ const Products = () => {
   }
 
   const filteredList =
-    selectedValue === 'all-products'
+    defaultCategory === 'all-products'
       ? data?.products
       : data?.products.filter(({ title, prefix }) => {
-          const regexString = selectedValue.replace('-', '|');
+          const regexString = selectedCategoryValue.replace('-', '|');
           const regex = new RegExp(regexString);
           return title.match(regex) || prefix?.match(regex);
         });
 
   return (
     <>
-      <div className="product-header">
-        <div className="wrapper">
-          <div className="columns is-mobile product-filter">
-            <div className="column is-8">
-              <h1 className="filter-title">{selectedCategory.label}</h1>
-              <h5 className="filter-subtitle">
-                {selectedCategory.description}
-              </h5>
-            </div>
-            <div className="column is-4">
-              <FormDropdown
-                options={categories}
-                defaultValue={defaultValue}
-                onChange={setProductCategory}
-                className="product-dropdown"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="product-list">
-        <div className="wrapper">
-          <div className="columns is-mobile is-multiline">
-            {filteredList.map(({ id, price, title, image_url }) => (
-              <div className="column is-one-third-tablet is-half-mobile has-text-centered">
-                <ProductItem
-                  id={id}
-                  imageUrl={image_url}
-                  label={title}
-                  onChoose={showCartMenu}
-                  price={`$${price}`}
-                  productDetailsUrl="/"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <ProductListHeader
+        category={selectedCategory}
+        categories={categories}
+        onChooseCategory={setProductCategory}
+      />
+      <ProductList
+        items={filteredList}
+        onChooseItem={showCartMenu}
+        currency={selectedCurrency}
+      />
     </>
   );
 };

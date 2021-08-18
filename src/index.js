@@ -7,16 +7,22 @@ import 'fonts/Karla-Italic-VariableFont_wght.ttf';
 import 'fonts/Karla-VariableFont_wght.ttf';
 import 'fonts/Montserrat-Regular.ttf';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { Provider } from 'react-redux';
+import { configureStore } from 'store/config';
 
 const client = new ApolloClient({
   uri: 'https://pangaea-interviews.now.sh/api/graphql',
   cache: new InMemoryCache(),
 });
 
+const store = configureStore();
+
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
