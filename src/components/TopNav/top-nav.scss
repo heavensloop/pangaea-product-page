@@ -28,19 +28,26 @@
     }
   }
 
-  .navbar-start, .navbar-end {
+  .navbar-start,
+  .navbar-end {
     margin-top: 10px;
   }
 
   .navbar-item {
     color: rgb(0, 0, 0);
     font-size: 14px;
-    font-weight: bold;
+  }
+
+  .shopping-cart-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
   }
 
   // a.navbar-item:focus,
   a.navbar-item:focus-within,
   a.navbar-item:hover {
+    color: rgb(0, 0, 0);
     background-color: transparent;
     opacity: 80%;
     -webkit-transition: color 0.3s ease-in-out;

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CartPreviewModal from 'components/CartPreviewModal';
 import ProductList from 'components/ProductList';
 import ProductListHeader from 'components/ProductListHeader';
-import { addToCart } from 'store/actions/cart';
+import { addToCart, hideCart, showCart } from 'store/actions/cart';
 import { GQL_PRODUCTS } from 'graphql/queries';
 import categories from './categories';
 import './products.scss';
@@ -17,7 +17,9 @@ const Products = () => {
   const dispatch = useDispatch();
   const query = useUrlQuery();
   const [currency, setCurrency] = useState('USD');
-  const [isViewingCart, setIsViewingCart] = useState(false);
+  const { isShowingCart } = useSelector(({ cart }) => ({
+    isShowingCart: cart.isShowingCart,
+  }));
   const selectedCategoryValue = query.get('category') || categories[0].value;
   const selectedCategory = categories.find(
     ({ value }) => value === selectedCategoryValue
@@ -35,8 +37,9 @@ const Products = () => {
   const showCartMenu = (productId) => {
     const selectedProduct = data?.products.find(({ id }) => id === productId);
     addProductToCart(selectedProduct);
-    setIsViewingCart(true);
+    dispatch(showCart());
   };
+  const hideShoppingCart = () => dispatch(hideCart());
 
   const filteredList =
     defaultCategory === 'all-products'
@@ -56,8 +59,8 @@ const Products = () => {
   return (
     <>
       <CartPreviewModal
-        show={isViewingCart}
-        onClose={() => setIsViewingCart(false)}
+        show={isShowingCart}
+        onClose={hideShoppingCart}
         currency={currency}
         onChangeCurrency={setCurrency}
       />

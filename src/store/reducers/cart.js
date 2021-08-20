@@ -1,13 +1,15 @@
 import {
+  SHOW_CART,
+  HIDE_CART,
   ADD_TO_CART,
   INCREMENT_ITEM,
   DECREMENT_ITEM,
   REMOVE_ITEM,
 } from 'store/actionTypes/cart';
-import Products from 'views/Products';
 
 const initialState = {
   items: [],
+  isShowingCart: false
 };
 
 const findItem = (items, productId) =>
@@ -66,6 +68,10 @@ export default (state = initialState, action) => {
       return { ...state, items: decrementItem(items, payload) };
     case REMOVE_ITEM:
       return { ...state, items: removeProduct(items, payload) };
+    case SHOW_CART:
+      return { ...state, isShowingCart: true };
+    case HIDE_CART:
+      return { ...state, isShowingCart: false };
     default:
       return state;
   }
