@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,14 +16,17 @@ const Products = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const query = useUrlQuery();
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
+  const [currency, setCurrency] = useState('USD');
   const [isViewingCart, setIsViewingCart] = useState(false);
   const selectedCategoryValue = query.get('category') || categories[0].value;
   const selectedCategory = categories.find(
     ({ value }) => value === selectedCategoryValue
   );
   const [defaultCategory, setDefaultCategory] = useState(selectedCategoryValue);
-  const { loading, error, data } = useQuery(GQL_PRODUCTS);
+  const [attempts, setAttempts] = useState(0);
+  const { loading, error, data } = useQuery(GQL_PRODUCTS, {
+    variables: { currency, attempts },
+  });
   const setProductCategory = (productCategory) => {
     setDefaultCategory(productCategory);
     history.push(`/?category=${productCategory}`);
@@ -35,14 +38,6 @@ const Products = () => {
     setIsViewingCart(true);
   };
 
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
-  if (error) {
-    return <h1>Error</h1>;
-  }
-
   const filteredList =
     defaultCategory === 'all-products'
       ? data?.products
@@ -52,11 +47,19 @@ const Products = () => {
           return title.match(regex) || prefix?.match(regex);
         });
 
+  useEffect(() => {
+    if (attempts < 3) {
+      setAttempts(attempts + 1);
+    }
+  }, [error, attempts]);
+
   return (
     <>
       <CartPreviewModal
         show={isViewingCart}
         onClose={() => setIsViewingCart(false)}
+        currency={currency}
+        onChangeCurrency={setCurrency}
       />
       <ProductListHeader
         category={selectedCategory}
@@ -67,7 +70,7 @@ const Products = () => {
       <ProductList
         items={filteredList}
         onChooseItem={showCartMenu}
-        currency={selectedCurrency}
+        currency={currency}
       />
     </>
   );

@@ -17,7 +17,6 @@ const CartPreviewModal = ({ show, onClose, currency, onChangeCurrency }) => {
   const incrementItemQuantity = (itemId) => dispatch(incrementItem(itemId));
   const removeItemFromCart = (itemId) => dispatch(removeItem(itemId));
   const shoppingCart = useSelector(({ cart }) => cart.items);
-  const currentCurrency = 'USD';
   const shoppingCartIsEmpty = shoppingCart.length < 1;
   const subTotal = shoppingCart.reduce(
     (total, { product, quantity }) => total + product.price * quantity,
@@ -43,7 +42,7 @@ const CartPreviewModal = ({ show, onClose, currency, onChangeCurrency }) => {
           <div className="currency-chooser">
             <FormDropdown
               options={currencies}
-              defaultValue={currentCurrency}
+              defaultValue={currency}
               onChange={onChangeCurrency}
             />
           </div>
@@ -59,7 +58,7 @@ const CartPreviewModal = ({ show, onClose, currency, onChangeCurrency }) => {
                     onRemoveItem={removeItemFromCart}
                     onDecrementQuantity={decrementItemQuantity}
                     onIncrementQuantity={incrementItemQuantity}
-                    currency={currentCurrency}
+                    currency={currency}
                     item={item}
                   />
                 ))}
@@ -68,7 +67,7 @@ const CartPreviewModal = ({ show, onClose, currency, onChangeCurrency }) => {
                 <div className="columns">
                   <div className="column is-4">Subtotal</div>
                   <div className="column is-8 has-text-right">
-                    <span className="mr-2">{currentCurrency}</span>
+                    <span className="mr-2">{currency}</span>
                     <span>{subTotal}</span>
                   </div>
                 </div>
