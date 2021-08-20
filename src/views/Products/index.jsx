@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import CartPreviewModal from 'components/CartPreviewModal';
 import ProductList from 'components/ProductList';
 import ProductListHeader from 'components/ProductListHeader';
 import { addToCart } from 'store/actions/cart';
@@ -9,35 +10,32 @@ import { GQL_PRODUCTS } from 'graphql/queries';
 import categories from './categories';
 import './products.scss';
 
-function useUrlQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+const useUrlQuery = () => new URLSearchParams(useLocation().search);
 
 const Products = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const shoppingCart = useSelector(({ cart }) => cart);
   const query = useUrlQuery();
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
+  const [isViewingCart, setIsViewingCart] = useState(false);
   const selectedCategoryValue = query.get('category') || categories[0].value;
   const selectedCategory = categories.find(
     ({ value }) => value === selectedCategoryValue
   );
   const [defaultCategory, setDefaultCategory] = useState(selectedCategoryValue);
-  const { isLoading, error, data } = useQuery(GQL_PRODUCTS);
-
+  const { loading, error, data } = useQuery(GQL_PRODUCTS);
   const setProductCategory = (productCategory) => {
     setDefaultCategory(productCategory);
     history.push(`/?category=${productCategory}`);
   };
-
   const addProductToCart = (product) => dispatch(addToCart(product));
   const showCartMenu = (productId) => {
     const selectedProduct = data?.products.find(({ id }) => id === productId);
     addProductToCart(selectedProduct);
+    setIsViewingCart(true);
   };
 
-  if (isLoading) {
+  if (loading) {
     return <h1>Loading...</h1>;
   }
 
@@ -56,10 +54,15 @@ const Products = () => {
 
   return (
     <>
+      <CartPreviewModal
+        show={isViewingCart}
+        onClose={() => setIsViewingCart(false)}
+      />
       <ProductListHeader
         category={selectedCategory}
         categories={categories}
         onChooseCategory={setProductCategory}
+        defaultCategory={defaultCategory}
       />
       <ProductList
         items={filteredList}

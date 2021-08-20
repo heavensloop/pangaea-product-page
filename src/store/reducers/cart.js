@@ -4,6 +4,7 @@ import {
   DECREMENT_ITEM,
   REMOVE_ITEM,
 } from 'store/actionTypes/cart';
+import Products from 'views/Products';
 
 const initialState = {
   items: [],
@@ -12,33 +13,44 @@ const initialState = {
 const findItem = (items, productId) =>
   items.find(({ product }) => product.id === productId);
 
-const excludeProduct = (items, productId) =>
+const removeProduct = (items, productId) =>
   items.filter(({ product }) => product.id !== productId);
 
-const addNewItem = (items, product, quantity = 1) => {
+const updateItem = (items, callBack) =>
+  [...items].map((item) => callBack(item));
+
+const incrementItem = (items, productId) =>
+  updateItem(items, (item) => {
+    if (item.product.id === productId) {
+      return { ...item, quantity: item.quantity + 1 };
+    }
+
+    return item;
+  });
+
+const decrementItem = (items, productId) =>
+  updateItem(items, (item) => {
+    if (item.product.id === productId) {
+      return { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 };
+    }
+
+    return item;
+  });
+
+const addNewItem = (items, product) => {
   const existing = findItem(items, product.id);
 
+  if (existing) {
+    return incrementItem(items, product.id);
+  }
+
   return [
-    ...excludeProduct(items, product.id),
+    ...items,
     {
       product,
-      quantity: existing ? existing.quantity + 1 : quantity,
+      quantity: 1,
     },
   ];
-};
-
-const incrementItem = (items, productId) => {
-  const item = findItem(items, productId);
-  const quantity = item.quantity + 1;
-
-  return addNewItem(excludeProduct(items, productId), item.product, quantity);
-};
-
-const decrementItem = (items, productId) => {
-  const item = findItem(items, productId);
-  const quantity = item.quantity + 1;
-
-  return addNewItem(excludeProduct(items, productId), item.product, quantity);
 };
 
 export default (state = initialState, action) => {
@@ -53,7 +65,7 @@ export default (state = initialState, action) => {
     case DECREMENT_ITEM:
       return { ...state, items: decrementItem(items, payload) };
     case REMOVE_ITEM:
-      return { ...state, items: excludeProduct(items, payload) };
+      return { ...state, items: removeProduct(items, payload) };
     default:
       return state;
   }

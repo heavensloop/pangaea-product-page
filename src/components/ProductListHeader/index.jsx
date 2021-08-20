@@ -4,7 +4,7 @@ import FormDropdown from 'components/FormDropdown';
 const ProductListHeader = ({
   category,
   categories,
-  defaultValue,
+  defaultCategory,
   onChooseCategory,
 }) => (
   <div className="product-header">
@@ -17,7 +17,7 @@ const ProductListHeader = ({
         <div className="column is-4">
           <FormDropdown
             options={categories}
-            defaultValue={defaultValue}
+            defaultValue={defaultCategory}
             onChange={onChooseCategory}
             className="product-dropdown"
           />
@@ -28,13 +28,17 @@ const ProductListHeader = ({
 );
 
 ProductListHeader.propTypes = {
-  category: PropTypes.string.isRequired,
-  categories: PropTypes.arrayOf({
+  category: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+    description: PropTypes.string,
+  }).isRequired,
+  categories: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.string
-  }).isRequired,
-  defaultValue: PropTypes.string.isRequired,
-  onChooseCategory: PropTypes.string.isRequired,
+  })).isRequired,
+  defaultCategory: PropTypes.string.isRequired,
+  onChooseCategory: PropTypes.func.isRequired,
 }
 
 export default ProductListHeader;

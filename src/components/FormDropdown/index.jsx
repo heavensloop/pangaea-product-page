@@ -5,13 +5,18 @@ const FormDropdown = ({ options, defaultValue, className, onChange }) => {
     onChange(e.currentTarget.value);
   };
 
+  const computedOptions = options.map((option) => ({
+    label: typeof option === 'string' ? option : option.label,
+    value: typeof option === 'string' ? option : option.value,
+  }));
+
   return (
     <select
       className={className}
       value={defaultValue}
       onChange={handleOnChange}
     >
-      {options.map(({ label, value }) => (
+      {computedOptions.map(({ label, value }) => (
         <option value={value} key={value}>
           {label}
         </option>
@@ -22,10 +27,13 @@ const FormDropdown = ({ options, defaultValue, className, onChange }) => {
 
 FormDropdown.propTypes = {
   options: PropTypes.arrayOf(
-    PropTypes.shape({
-      option: PropTypes.string,
-      value: PropTypes.string,
-    })
+    PropTypes.oneOf([
+      PropTypes.shape({
+        option: PropTypes.string,
+        value: PropTypes.string,
+      }),
+      PropTypes.string,
+    ])
   ).isRequired,
   defaultValue: PropTypes.string.isRequired,
   className: PropTypes.string,
