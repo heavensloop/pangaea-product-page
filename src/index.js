@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from 'store/config';
 
 const client = new ApolloClient({
-  uri: 'https://pangaea-interviews.now.sh/api/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_URL,
   cache: new InMemoryCache(),
 });
 
