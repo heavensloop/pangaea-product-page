@@ -13,9 +13,21 @@
 
 body {
   color: rgb(0, 0, 0);
-  font-family: "FF Bau",san-serif;
+  font-family: 'FF Bau', san-serif;
   font-weight: 400;
   margin: 0;
   font-size: 13px;
   background-color: #f5f5f4;
+}
+
+.fixed-height {
+  overflow: hidden!important;
+  max-height: 100vh;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.fixed-height::-webkit-scrollbar {
+  display: none;
 }
