@@ -27,20 +27,21 @@ const FormDropdown = ({ options, defaultValue, className, onChange }) => {
 
 FormDropdown.propTypes = {
   options: PropTypes.arrayOf(
-    PropTypes.oneOf([
+    PropTypes.oneOfType([
       PropTypes.shape({
-        option: PropTypes.string,
-        value: PropTypes.string,
+        label: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
       }),
-      PropTypes.string,
+      PropTypes.string.isRequired,
     ])
-  ).isRequired,
+  ),
   defaultValue: PropTypes.string.isRequired,
   className: PropTypes.string,
   onChange: PropTypes.func,
 };
 
 FormDropdown.defaultProps = {
+  options: [],
   className: '',
   onChange: () => {},
 };

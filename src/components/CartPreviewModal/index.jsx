@@ -26,7 +26,7 @@ const CartPreviewModal = ({ show, onClose, currency, onChangeCurrency }) => {
   );
 
   useEffect(() => {
-    if (error) {
+    if (error && fetchCurrencyAttempts < 3) {
       setFetchCurrencyAttempts(fetchCurrencyAttempts + 1);
     }
   }, [error, fetchCurrencyAttempts]);

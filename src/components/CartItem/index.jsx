@@ -71,7 +71,7 @@ CartItem.propTypes = {
       image_url: PropTypes.string,
       title: PropTypes.string,
       description: PropTypes.string,
-      price: PropTypes.string,
+      price: PropTypes.number,
     }),
   }).isRequired,
   currency: PropTypes.string.isRequired,

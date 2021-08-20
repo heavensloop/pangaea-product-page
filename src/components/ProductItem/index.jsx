@@ -42,7 +42,7 @@ const ProductItem = ({
 ProductItem.propTypes = {
   id: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
   currency: PropTypes.string.isRequired,
   onChoose: PropTypes.func.isRequired,
   imageUrl: PropTypes.string.isRequired,

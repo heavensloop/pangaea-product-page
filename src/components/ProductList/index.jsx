@@ -28,13 +28,15 @@ const ProductList = ({ items, onChooseItem, currency }) => (
 );
 
 ProductList.propTypes = {
-  items: PropTypes.arrayOf({
-    id: PropTypes.string,
-    image_url: PropTypes.string,
-    title: PropTypes.string,
-    price: PropTypes.string,
-    currency: PropTypes.string,
-  }).isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      image_url: PropTypes.string,
+      title: PropTypes.string,
+      price: PropTypes.number,
+      currency: PropTypes.string,
+    })
+  ).isRequired,
   onChooseItem: PropTypes.func.isRequired,
   currency: PropTypes.string.isRequired,
 };

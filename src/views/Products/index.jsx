@@ -29,13 +29,14 @@ const Products = () => {
   const { error, data } = useQuery(GQL_PRODUCTS, {
     variables: { currency, attempts },
   });
+  const productList = data?.products ?? [];
   const setProductCategory = (productCategory) => {
     setDefaultCategory(productCategory);
     history.push(`/?category=${productCategory}`);
   };
   const addProductToCart = (product) => dispatch(addToCart(product));
   const showCartMenu = (productId) => {
-    const selectedProduct = data?.products.find(({ id }) => id === productId);
+    const selectedProduct = productList.find(({ id }) => id === productId);
     addProductToCart(selectedProduct);
     dispatch(showCart());
   };
@@ -43,15 +44,15 @@ const Products = () => {
 
   const filteredList =
     defaultCategory === 'all-products'
-      ? data?.products
-      : data?.products.filter(({ title, prefix }) => {
+      ? productList
+      : productList.filter(({ title, prefix }) => {
           const regexString = selectedCategoryValue.replace('-', '|');
           const regex = new RegExp(regexString);
           return title.match(regex) || prefix?.match(regex);
         });
 
   useEffect(() => {
-    if (attempts < 3) {
+    if (error && attempts < 3) {
       setAttempts(attempts + 1);
     }
   }, [error, attempts]);
