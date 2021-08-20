@@ -24,7 +24,7 @@ const Products = () => {
   );
   const [defaultCategory, setDefaultCategory] = useState(selectedCategoryValue);
   const [attempts, setAttempts] = useState(0);
-  const { loading, error, data } = useQuery(GQL_PRODUCTS, {
+  const { error, data } = useQuery(GQL_PRODUCTS, {
     variables: { currency, attempts },
   });
   const setProductCategory = (productCategory) => {

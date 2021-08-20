@@ -8,9 +8,11 @@ import FormDropdown from 'components/FormDropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import './cart-preview-modal.scss';
 import { decrementItem, incrementItem, removeItem } from 'store/actions/cart';
+import { useEffect, useState } from 'react';
 
 const CartPreviewModal = ({ show, onClose, currency, onChangeCurrency }) => {
-  const { loading, error, data } = useQuery(GQL_CURRENCIES);
+  const [fetchCurrencyAttempts, setFetchCurrencyAttempts] = useState(0);
+  const { error, data } = useQuery(GQL_CURRENCIES);
   const dispatch = useDispatch();
   const currencies = data?.currency || [];
   const decrementItemQuantity = (itemId) => dispatch(decrementItem(itemId));
@@ -22,6 +24,20 @@ const CartPreviewModal = ({ show, onClose, currency, onChangeCurrency }) => {
     (total, { product, quantity }) => total + product.price * quantity,
     0
   );
+
+  useEffect(() => {
+    if (error) {
+      setFetchCurrencyAttempts(fetchCurrencyAttempts + 1);
+    }
+  }, [error, fetchCurrencyAttempts]);
+
+  useEffect(() => {
+    if (show) {
+      document.body.classList.add('fixed-height');
+    } else {
+      document.body.classList.remove('fixed-height');
+    }
+  }, [show])
 
   return (
     <div className={classnames('modal', { 'is-active': show })}>
